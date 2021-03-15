@@ -1,0 +1,168 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { NavLink, Route, Redirect, Switch } from 'react-router-dom';
+import { Container, Nav, Row } from 'react-bootstrap';
+
+
+import { AuthContext } from './context/auth-context';
+
+import Auth from './components/pages/Auth/Auth';
+import Logout from './components/pages/Auth/Logout';
+import SingUp from './components/pages/Auth/SingUp';
+import RecorveryPassword from './components/pages/Auth/Auth';
+import HomeAdm from './components/pages/ADM/HomeAdm';
+import Banner from './components/pages/ADM/Banner/Banner';
+import Perfil from './components/pages/ADM/Perfil/Perfil';
+import House from './components/pages/ADM/House/House';
+import User from './components/pages/ADM/User/User';
+import Task from './components/pages/ADM/Task/Task';
+import Bill from './components/pages/ADM/Bill/Bill';
+import BillManager from './components/pages/ADM/Bill/BillManager';
+import ReceiveBill from './components/pages/ADM/Bill/ReceiveBill';
+
+const App = () => {
+  const authContext = useContext(AuthContext);
+  const [accessLevel, setAccessLevel] = useState(authContext.isAuth);
+
+  useEffect(() => {
+    console.log('useEffect');
+    setAccessLevel(authContext.isAuth);
+  }, [authContext]);
+
+
+  let routes =
+    <Switch>
+      <Route path="/auth" exact component={Auth} />
+      <Route path="/singup" component={SingUp} />
+      <Route path="/recorvery_password" component={RecorveryPassword} />
+      <Redirect to="/auth" />
+    </Switch>
+  let menu = ''
+
+  if (accessLevel === 1) {
+    //Rotas Adm
+    routes =
+      //<Layout>
+      <Switch>
+        <Route path="/" exact component={HomeAdm} />
+        <Route path="/logout" exact component={Logout} />
+        <Route path="/perfil" component={Perfil} />
+        <Route path="/house" component={House} />
+        <Route path="/banner" component={Banner} />
+        <Route path="/user" component={User} />
+        <Route path="/task" component={Task} />
+        <Route path="/bill" component={Bill} />
+        <Route path="/bill_manager" component={BillManager} />
+        <Route path="/receive_bill" component={ReceiveBill} />
+        <Redirect to="/" />
+      </Switch>
+    //</Layout>
+    menu =
+    // <Nav className="navbar navbar-dark bg-dark d-flex justify-content-end" activeKey="/home">
+      <Nav className="navbar dark bg-dark d-flex justify-content-end" variant="dark" activeKey="/home">
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/">Home</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/perfil">Perfil</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/house">Casas</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/user">Usuários</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/task">Tarefas</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/bill">Gerenciar Contas</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/">Vaquinhas</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/logout">Logout</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+  } else
+  if (accessLevel === 2) {
+    //Rotas Adm
+    routes =
+      //<Layout>
+      <Switch>
+        <Route path="/" exact component={HomeAdm} />
+        <Route path="/logout" exact component={Logout} />
+        <Route path="/perfil" component={Perfil} />
+        <Redirect to="/" />
+      </Switch>
+    //</Layout>
+    menu =
+      <Nav className="navbar navbar-dark bg-dark d-flex justify-content-end" activeKey="/home">
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/">Home</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/perfil">Perfil</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/">Tarefas</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/">Contas</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/">Vaquinhas</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link>
+            <NavLink to="/logout">Logout</NavLink>
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+  }
+
+/*
+
+*/
+
+  return (
+    <Container fluid style={{ padding: '0', width: '100vw', height: '100vh' }}>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"></meta>
+        {menu}
+      <React.Fragment>
+        <main>
+          <Row style={{ padding: '0', width: '100vw', height: '100%', marginRight: '0', marginLeft: '0' }}>
+            {routes}
+          </Row>
+        </main>
+      </React.Fragment>
+    </Container>
+  );
+};
+export default App;
